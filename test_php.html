@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head> 
+		<meta charset="utf-8">
+		<title>Génération de fiche metadonnée</title>
+
+		<link rel="stylesheet" href="style_meta.css">
+		
+	</head>
+	<body>
+		<div class="form">
+		<h2> Génération de fiche métadonnée </h2>
+		<br><br>
+		<form action="insert.php" method="post" name="metadonnee" id="metadonnee" target="_self">
+			
+			<label for="fname">Nom de fichier :</label>
+			<input type="text" id="fname" name="fname" placeholder="nom_de_fichier" required><br><br>
+			
+			<label for="datecrea">Date de création :</label>
+			<input type="date" id="datecrea" name="datecrea" required><br>
+			<label for="datemodif">Date de modification :</label>
+			<input type="date" id="datemodif" name="datemodif"><br><br>
+			
+			<label for="ref_coord">Référentiel de Coordonnées :</label>
+				<select id="ref_coord" name="ref_coord">
+					<option selected value="Lambert-93">Lambert-93</option>
+					<option value="WGS84">WGS84</option>
+					<option value="CC49">CC49</option>
+				</select><br>
+			
+				<label for="format">Format :</label>
+				<select id="format" name="format">
+					<option selected value="vecteur">Vecteur</option>
+					<option value="rasteur">Rasteur</option>
+					<option value="geojson">GeoJSON</option>
+					<option value="csv">CSV</option>
+				</select><br><br>
+				
+			<label for="cat">Catégorie de données :</label>
+				<select id="cat" name="cat"> 
+					<option selected value="littoral">Littoral</option>
+					<option value="bocage">Bocage</option>
+					<option value="zone_humide">Zone humide</option>
+					<option value="instruction">Instruction</option>
+					<option value="foncier">Foncier</option>
+					<option value="riviere">Rivière</option>
+					<option value="autre">Autre</option>
+				</select><br>
+			<label for="cat_aut">Si autre, précisez :</label>
+				<input type="text" id="cat_aut" name="cat_aut" placeholder="Précisez..."><br><br>
+			
+			<label for="service">Service :</label>
+			<input type="text" id="service" name="service" placeholder="DSI" required><br>
+
+			<label for="auteur">Auteur :</label>
+			<input type="text" id="auteur" name="auteur" placeholder="Nom Prénom" required><br>
+			
+			<label for="mail">Mail service:</label>
+			<input type="email" id="mail" name="mail" placeholder="p.nom@service.fr" required><br><br>
+			
+			<label for="desc">Description :</label>
+			<textarea id="desc" rows="3" placeholder="Description de la donnée..." name="desc"></textarea>
+			<br><br><br>
+			<input type="submit" value="Envoyer dans la base de données"><br><br>
+			<button id="gen">Générer et envoyer la fiche de métadonnées</button> <br><br>
+			<input type="reset" value="Reset">
+		</form>
+		</div>
+		<script>
+		
+		
+			let button = document.getElementById('gen');
+			function fiche() {
+			
+				// Validation de questionnaire 
+				if (fname.value == "", datecrea.value == "", 
+						service.value=="", auteur.value=="", mail.value=="", desc.value=="" ) {
+					alert("Tous les champs sont obligatoires");
+					return false;
+				}
+				// Nettoyage nom de fichier et filtrage sur catégorie autre
+				var bname = fname.value.replace(/ /g,"_");
+				const	cname = bname.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+				
+				if (cat.value == "autre") {
+					var cat_final = cat_aut.value;
+				} else {
+					cat_final = cat.value;
+				}
+
+				// Création de nouveau nom 
+				let full_name = datecrea.value + "_" + cname;
+					// Création de la date actuelle
+				let datemeta = new Date().toLocaleDateString("fr-FR");
+				// Création de fichier HTML et import de données pour la fiche 
+				let doc = document.implementation.createHTMLDocument(full_name);
+				let name = doc.createElement("h3");
+					name.textContent = full_name;
+					doc.body.appendChild(name);
+				let date = doc.createElement("p");
+					date.textContent = "Date de création \: " + datecrea.value;
+					doc.body.appendChild(date);
+				let datem = doc.createElement("p");
+					datem.textContent = "Date de modification \: " + datemodif.value; 
+					doc.body.appendChild(datem);
+				let dateme = doc.createElement("p");
+					dateme.textContent = "Date de création de métadonnée \: " + datemeta;
+					doc.body.appendChild(dateme);
+				let sel_ref = doc.createElement("p");
+					sel_ref.textContent = "Référentiel de Coordonnées \: " + ref_coord.value; 
+					doc.body.appendChild(sel_ref);
+				let sel_format = doc.createElement("p");
+					sel_format.textContent = "Format de données \: " + format.value; 
+					doc.body.appendChild(sel_format);
+				let serv = doc.createElement("p");
+					serv.textContent = "Service responsable \: " + service.value ;
+					doc.body.appendChild(serv);
+				let cat1 = doc.createElement("p");
+					cat1.textContent = "Catégorie de données \: " + cat_final ;
+					doc.body.appendChild(cat1);
+
+
+				let aut = doc.createElement("p");
+					aut.textContent = "Auteur \: " + auteur.value;
+					doc.body.appendChild(aut);
+				let mel = doc.createElement("p");
+					mel.textContent = "Mail service \: " + mail.value;
+					doc.body.appendChild(mel);
+				let descr = doc.createElement("p");
+					descr.textContent = "Description \: " + desc.value;
+					doc.body.appendChild(descr);
+				// Style de la fiche créé
+				let b = doc.querySelectorAll("body");
+					for (var i = 0; i < b.length;  i++) {
+						b[i].setAttribute("style", "display: flex; flex-flow: column;justify-content: center;align-items: center;height: 100vh;margin: 2rem 0;background: linear-gradient(45deg, greenyellow, dodgerblue);");
+						};
+				let p = doc.querySelectorAll("p");
+					for (var i = 0; i < p.length;  i++) {
+						p[i].setAttribute("style", "color: black");
+						};
+				let h = doc.querySelectorAll("h3");
+					for (var i = 0; i < h.length;  i++) {
+						h[i].setAttribute("style", "color: black");
+						};
+				// Sauvegarde de la fiche 
+				var result = doc.body.innerHTML;
+				var save = new Blob([result], {type : 'text/html'}); 
+					var a = document.createElement("a"),
+						url = URL.createObjectURL(save);
+					a.href = url;
+					a.download = full_name + ".html";
+					document.body.appendChild(a);
+					a.click();
+	
+			};
+			// Lancement de la fonction JS 
+			button.addEventListener('click', fiche);
+		</script>
+	</body>
+	
+</html>

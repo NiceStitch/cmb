@@ -1,0 +1,94 @@
+
+		    body {
+				display: flex;
+				flex-flow: column;
+				justify-content: center;
+				align-items: center;
+				height: 100vh;
+				margin: 2rem 0;
+				background: linear-gradient(45deg, greenyellow, dodgerblue);
+				}
+			.form {
+				background: white;
+				padding : 1.5em;
+                border-radius: 20px;
+            
+            }
+            h2 {
+                text-align: center;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            input { 
+                color: rgb(20, 20, 20);
+                border-radius: 5px;
+                outline: none;
+                border-style:hidden;
+                margin-bottom: 0.2em;
+                font-size: medium;
+                background-color: whitesmoke;
+             
+            }
+            input::placeholder {
+                color: grey;
+            }
+            input:focus {  
+                border-style: ridge;
+                border-color: dodgerblue;
+                color: rgb(20, 20, 20);
+                margin: 0em;
+            }
+            textarea {
+                border-radius: 5px;
+                border-style: hidden;
+                background-color: whitesmoke;
+                height: 100px;
+                width: 200px;
+              
+            }
+            button {
+                color: rgb(20, 20, 20);
+                border-style: hidden;
+                background-color: rgb(148, 255, 127);
+                font-size: large;
+                border-radius: 5px;
+                padding: 0.2em;
+                border-style: solid;
+                border-color: grey;
+            }
+            select {
+                color: rgb(20, 20, 20);
+                border-style: hidden;
+                font-size: medium;
+                background-color: whitesmoke;
+                margin-bottom: 0.2em;
+                
+              
+                border-radius: 5px;
+            }
+            select:focus {
+                border-style: ridge;
+                border-color: dodgerblue;
+                color: rgb(20, 20, 20);
+            }
+            input[type="submit"] {
+                background-color: dodgerblue;
+                color: rgb(20, 20, 20);
+                font-size: large;
+                padding: 0.2em;
+                border-style: solid;
+                border-color: rgb(64, 64, 255);
+                border-radius: 5px;
+                
+            }
+            input[type="reset"] {
+                color: white;
+                background-color:grey;
+                padding: 3.5px;
+            }
+		    label {
+				font-family: sans-serif;
+                font-size: medium;
+                color: rgb(20, 20, 20);
+
+                
+            }
